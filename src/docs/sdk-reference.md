@@ -55,7 +55,7 @@ The hook provides all that is required for triggering transactions. useTransacti
 
 ```jsx
 import { useTransaction } from '@useelven/core';
-import { TransactionPayload } from '@multiversx/sdk-core';
+import { TransactionPayload, TokenPayment } from '@multiversx/sdk-core';
 
 (...)
 
@@ -67,7 +67,7 @@ const handleSendTx = () => {
     address: 'erd123.....',
     gasLimit: 50000 + 1500 * demoMessage.length,
     data: new TransactionPayload(demoMessage),
-    value: '1',
+    value: TokenPayment.egldFromBigInteger(1_000_000_000_000_000_000),
   });
 };
 ```
@@ -91,7 +91,7 @@ const handleSendTx = () => {
   triggerTx({
     address: 'erd123.....',
     gasLimit: 14000000,
-    value: 1,
+    value: TokenPayment.egldFromBigInteger(1_000_000_000_000_000_000),
     data
   });
 };
