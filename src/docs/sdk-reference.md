@@ -26,7 +26,9 @@ The hook is responsible for synchronizing the network on each refresh. It should
 import { useNetworkSync } from '@useelven/core';
 
 const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
-  useNetworkSync();
+
+  useNetworkSync({ chainType: 'devnet' });
+
   return (
     <ChakraProvider theme={theme}>
       <Component {...pageProps} />
@@ -37,7 +39,7 @@ const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
 
 #### useLogin
 
-It is the main hook for logging in. The hook is one for all auth providers and can take the auth token as an argument. It can be by any string. Based on this, the auth signature will be generated. This is required when you verify the user account on the backend side. The demos don't use it by default, but you can still pass it.
+It is the main hook for logging in. The hook is one for all auth providers and can take the auth token as an argument. It can be by any string. Based on this, the auth signature will be generated. This is required when you verify the user account on the backend side.
 
 ```jsx
 import { useLogin } from '@useelven/core';
