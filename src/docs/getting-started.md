@@ -35,8 +35,58 @@ npm install @useelven/core --save
 
 Then import in React app. For example:
 
-```
+```jsx
 import { useNetworkSync } from '@useelven/core';
+```
+
+Initialize:
+
+```jsx
+import { useNetworkSync } from '@useelven/core';
+
+const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
+
+  useNetworkSync({ chainType: 'devnet' });
+
+  return (
+    <ChakraProvider theme={theme}>
+      <Component {...pageProps} />
+    </ChakraProvider>
+  );
+};
+```
+
+Login:
+
+```jsx
+import { useLogin } from '@useelven/core';
+
+(...)
+
+const { login, isLoggedIn, error } = useLogin({
+  token: 'some_hash_here',
+});
+```
+
+Sign and send transaction:
+
+```jsx
+import { useTransaction } from '@useelven/core';
+import { TransactionPayload, TokenPayment } from '@multiversx/sdk-core';
+
+(...)
+
+const { pending, triggerTx, transaction, txResult, error } = useTransaction();
+
+const handleSendTx = () => {
+  const demoMessage = 'Transaction demo!';
+  triggerTx({
+    address: 'erd123.....',
+    gasLimit: 50000 + 1500 * demoMessage.length,
+    data: new TransactionPayload(demoMessage),
+    value: TokenPayment.egldFromBigInteger(1_000_000_000_000_000_000),
+  });
+};
 ```
 
 The tools should work with most React setups. For example, with Next.js or React + Vite. But each of the setups requires some additional configuration. This is why there are demo templates that you can clone and treat as a base for your app.

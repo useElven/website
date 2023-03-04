@@ -37,6 +37,30 @@ const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
 };
 ```
 
+Configuration options in `useNetworkSync`:
+
+```typescript
+chainType?: string;
+shortId?: string;
+name?: string;
+egldLabel?: string;
+egldDenomination?: string;
+decimals?: string;
+gasPerDataByte?: string;
+walletConnectDeepLink?: string;
+walletAddress?: string;
+apiAddress?: string;
+explorerAddress?: string;
+IPFSGateway?: string;
+apiTimeout?: string;
+walletConnectV2RelayAddresses?: string[];
+walletConnectV2ProjectId?: string;
+```
+
+You can overwrite each of the settings. But when you don't overwrite all of them and overwrite the `chainType`, all other values will default by the `chainType`. You can find all defaults [here](https://github.com/useElven/core/blob/wallet-connect-2/src/config/network.ts).
+
+So, for example, when you set the `chainType` to `testnet`, and `apiTimeout` to `10000` and nothing more. Then you will get all default settings for the testnet, like the API endpoint, `testnet-api.multiversx.com`, but the `apiTimeout` will be kept at `10000`.
+
 #### useLogin
 
 It is the main hook for logging in. The hook is one for all auth providers and can take the auth token as an argument. It can be by any string. Based on this, the auth signature will be generated. This is required when you verify the user account on the backend side.
