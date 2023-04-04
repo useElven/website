@@ -23,14 +23,14 @@
   font-size: 80px;
   font-weight: 900;
   text-align: center;
-  padding-bottom: 70px;
-  padding-top: 40px;
+  padding-bottom: 90px;
+  padding-top: 60px;
   line-height: 1;
 
   &.secondary {
     font-size: 50px;
     font-weight: 700;
-    padding-top: 60px;
+    padding-top: 120px;
 
     @media screen and (max-width: 760pxhomepage-lead) {
       font-size: 40px;
@@ -68,6 +68,12 @@
   font-size: 22px;
   font-weight: 300;
   line-height: 1.2;
+  max-width: 800px;
+  margin: 0 auto;
+
+  @media screen and (max-width: 600px) {
+    font-size: 16px;
+  }
 
   a {
     color: $color-main-dark;
