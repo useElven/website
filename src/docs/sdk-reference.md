@@ -84,6 +84,10 @@ const { login, isLoggedIn, error, walletConnectUri, getHWAccounts } = useLogin({
 
 The hook provides all that is required for triggering transactions. useTransaction can also take a callback function as an argument.
 
+<div class="docs-box docs-info-box">
+  You should always use transaction hooks when you are sure that you are in a signed-in context
+</div>
+
 ```jsx
 import { useTransaction } from '@useelven/core';
 import { TransactionPayload, TokenTransfer } from '@multiversx/sdk-core';

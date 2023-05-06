@@ -91,6 +91,10 @@ const handleSendTx = () => {
 
 The tools should work with most React setups. For example, with Next.js or React + Vite. But each of the setups requires some additional configuration. This is why there are demo templates that you can clone and treat as a base for your app.
 
+<div class="docs-box docs-info-box">
+  You should always use transaction hooks when you are sure that you are in a signed-in context
+</div>
+
 ## Summary
 
 Okay, so you know what useElven is and how to start using it. You are now ready to look at the [SDK reference](/docs/sdk-reference.html).
