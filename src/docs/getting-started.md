@@ -22,7 +22,7 @@ The tool is a wrapper for [sdk-js](https://docs.multiversx.com/sdk-and-tools/sdk
 
 The fundamental functionality is connecting and logging the user using auth providers. useElven supports all of [4 signing providers](https://docs.multiversx.com/sdk-and-tools/sdk-js/sdk-js-signing-providers).
 
-There is also an option to pass a unique token and get a signature after authentication, which you can use for additional backend verification.
+By default useElven uses [@multiversx/sdk-native-auth-client](https://www.npmjs.com/package/@multiversx/sdk-native-auth-client) under the hood.
 
 Besides authentication, useElven will also help with all the interactions, like sending native $EGLD tokens or even ESDT tokens. It will allow you to make most transactions, including interactions with custom smart contracts. There is also a possibility to query smart contracts. With an ABI file, you can also decode returned data using React hooks.
 
@@ -63,9 +63,7 @@ import { useLogin } from '@useelven/core';
 
 (...)
 
-const { login, isLoggedIn, error } = useLogin({
-  token: 'some_hash_here',
-});
+const { login, isLoggedIn, error } = useLogin();
 ```
 
 Sign and send transaction:

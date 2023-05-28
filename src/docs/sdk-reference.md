@@ -68,16 +68,14 @@ So, for example, when you set the `chainType` to `testnet`, and `apiTimeout` to 
 
 #### useLogin
 
-It is the main hook for logging in. The hook is one for all auth providers and can take the auth token as an argument. It can be by any string. Based on this, the auth signature will be generated. This is required when you verify the user account on the backend side.
+It is the main hook for logging in. By default useElven uses [@multiversx/sdk-native-auth-client](https://www.npmjs.com/package/@multiversx/sdk-native-auth-client) under the hood.
 
 ```jsx
 import { useLogin } from '@useelven/core';
 
 (...)
 
-const { login, isLoggedIn, error, walletConnectUri, getHWAccounts } = useLogin({
-  token: 'some_hash_here',
-});
+const { login, isLoggedIn, error, walletConnectUri, getHWAccounts } = useLogin();
 ```
 
 #### useTransaction()
@@ -219,14 +217,14 @@ const { address, nonce, balance } = useAccount();
 
 #### useLoginInfo()
 
-The hook will provide information about the user's auth data state. The data: loginMethod, expires, loginToken, signature. Login token and signature won't always be there. It depends if you'll use the token. Check [Elven Tools Dapp backend integration article](https://www.elven.tools/docs/dapp-backend-integration.html) for more info.
+The hook will provide information about the user's auth data state. The data: loginMethod, expires, loginToken, signature, accessToken.
 
 ```jsx
 import { useLoginInfo } from '@useelven/core';
 
 (...)
 
-const { loginMethod, expires, loginToken, signature } = useLoginInfo();
+const { loginMethod, expires, loginToken, signature, accessToken } = useLoginInfo();
 ```
 
 #### useApiCall()
