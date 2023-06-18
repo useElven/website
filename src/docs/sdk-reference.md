@@ -75,7 +75,13 @@ import { useLogin } from '@useelven/core';
 
 (...)
 
-const { login, isLoggedIn, error, walletConnectUri, getHWAccounts } = useLogin();
+const {
+  login,
+  isLoggedIn,
+  error,
+  walletConnectUri,
+  getHWAccounts
+} = useLogin();
 ```
 
 #### useTransaction()
@@ -83,7 +89,7 @@ const { login, isLoggedIn, error, walletConnectUri, getHWAccounts } = useLogin()
 The hook provides all that is required for triggering transactions. useTransaction can also take a callback function as an argument.
 
 <div class="docs-box docs-info-box">
-  You should always use transaction hooks when you are sure that you are in a signed-in context
+  You should always use transaction hooks when you are sure that you are in a signed-in context (Check Authenticated component in <a href="https://github.com/xdevguild/nextjs-dapp-template">Next.js Dapp Template</a>).
 </div>
 
 ```jsx
@@ -92,7 +98,13 @@ import { TransactionPayload, TokenTransfer } from '@multiversx/sdk-core';
 
 (...)
 
-const { pending, triggerTx, transaction, txResult, error } = useTransaction({ cb });
+const {
+  pending,
+  triggerTx,
+  transaction, // transaction data before signing
+  txResult, // transaction result on chain
+  error
+} = useTransaction({ cb, webWalletRedirectUrl });
 
 const handleSendTx = () => {
   const demoMessage = 'Transaction demo!';
@@ -129,6 +141,82 @@ const handleSendTx = () => {
   });
 };
 ```
+
+Params:
+
+- `cb` - optional callback function
+- `webWalletRedirectUrl` - redirect url when using Web Wallet, default `/`
+
+#### useTokenTransfer()
+
+The hook is a wrapper over the `useTransaction`. It is designed to simplify transferring ESDT tokens (so fungible, NFT, SFT, meta). You can send them between standard addresses and to a smart contract. You can also call a smart contract endpoint and pass the required parameters.
+
+<div class="docs-box docs-info-box">
+  You should always use transaction hooks when you are sure that you are in a signed-in context (Check Authenticated component in <a href="https://github.com/xdevguild/nextjs-dapp-template">Next.js Dapp Template</a>).
+</div>
+
+Example: we send the fungible tokens to a faucet smart contract, and we want to call the `setLimit` endpoint, which is responsible for setting the daily claim limit. You can check the code [here](https://github.com/xdevguild/esdt-faucet-dapp).
+
+```jsx
+import { BigUIntValue } from '@multiversx/sdk-core';
+import { useTokenTransfer ScTokenTransferType } from '@useelven/core';
+
+(...)
+
+const {
+  pending, 
+  transfer,
+  transaction, // transaction data before signing
+  txResult, // transaction result on chain
+  error
+} = useTokenTransfer({ cb, webWalletRedirectUrl });
+
+(...)
+
+transfer({
+  type: ScTokenTransferType.ESDTTransfer,
+  tokenId: 'BUILDO-890d14',
+  address: 'erd1qqqqqqqqqqqqqpgqwd59aum8c7c72ces7cezsmhqd8rqrtwagtksp6jahr',
+  amount: 10,
+  gasLimit: 3000000,
+  value: 0,
+  endpointName: 'setLimit', // In this example - faucet limit per day
+  endpointArgs: [new BigUIntValue('1000000000000000000')],
+});
+```
+
+Here is another example where we want to send a specific NFT token to the staking smart contract, and at the same time, we want to call the `stake` endpoint.
+
+```jsx
+import { BigUIntValue } from '@multiversx/sdk-core';
+import { useTokenTransfer ScTokenTransferType } from '@useelven/core';
+
+(...)
+
+const {
+  pending, 
+  transfer,
+  transaction, // transaction data before signing
+  txResult, // transaction result on chain
+  error
+} = useTokenTransfer({ cb, webWalletRedirectUrl });
+
+(...)
+
+transfer({
+  type: ScTokenTransferType.ESDTNFTTransfer,
+  tokenId: 'FCS-12ed15-0c',
+  address: 'erd1qqqqqqqqqq...',
+  nonce: 12,
+  gasLimit: 5000000,
+  endpointName: 'stake', // In this example - we want to call the stake endpoint
+});
+```
+
+Params:
+
+- `cb` - optional callback function
+- `webWalletRedirectUrl` - redirect url when using Web Wallet, default `/`
 
 #### useScQuery()
 
@@ -224,7 +312,13 @@ import { useLoginInfo } from '@useelven/core';
 
 (...)
 
-const { loginMethod, expires, loginToken, signature, accessToken } = useLoginInfo();
+const {
+  loginMethod,
+  expires,
+  loginToken,
+  signature,
+  accessToken
+} = useLoginInfo();
 ```
 
 #### useApiCall()
