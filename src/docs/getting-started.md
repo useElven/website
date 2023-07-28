@@ -80,7 +80,8 @@ const handleSendTx = () => {
   const demoMessage = 'Transaction demo!';
   triggerTx({
     address: 'erd123.....',
-    gasLimit: 50000 + 1500 * demoMessage.length,
+    // you will need additional 50000 when working with guarded accounts
+    gasLimit: 50000 + 1500 * demoMessage.length, 
     data: new TransactionPayload(demoMessage),
     value: TokenTransfer.egldFromBigInteger(1_000_000_000_000_000_000),
   });
