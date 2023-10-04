@@ -178,7 +178,7 @@ transfer({
   type: ScTokenTransferType.ESDTTransfer,
   tokenId: 'BUILDO-890d14',
   address: 'erd1qqqqqqqqqqqqqpgqwd59aum8c7c72ces7cezsmhqd8rqrtwagtksp6jahr',
-  amount: 10,
+  amount: '10000000000000000000', // amount for a token with 18 decimal places (here the amount is 10)
   gasLimit: 3000000,
   value: 0,
   endpointName: 'setLimit', // In this example - faucet limit per day
