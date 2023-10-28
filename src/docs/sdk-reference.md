@@ -53,6 +53,7 @@ egldDenomination?: string;
 decimals?: string;
 gasPerDataByte?: string;
 walletConnectDeepLink?: string;
+xAliasAddress?: string;
 walletAddress?: string;
 apiAddress?: string;
 explorerAddress?: string;
@@ -71,7 +72,7 @@ So, for example, when you set the `chainType` to `testnet`, and `apiTimeout` to 
 It is the main hook for logging in. By default useElven uses [@multiversx/sdk-native-auth-client](https://www.npmjs.com/package/@multiversx/sdk-native-auth-client) under the hood.
 
 ```jsx
-import { useLogin } from '@useelven/core';
+import { useLogin, LoginMethodsEnum } from '@useelven/core';
 
 (...)
 
@@ -82,6 +83,23 @@ const {
   walletConnectUri,
   getHWAccounts
 } = useLogin();
+
+(...)
+
+login(LoginMethodsEnum.extension);
+```
+
+where:
+```ts
+enum LoginMethodsEnum {
+  ledger = "ledger",
+  walletconnect = "walletconnect",
+  wallet = "wallet",
+  extension = "extension",
+  xalias = "xalias",
+  extra = "extra",
+  none = ""
+}
 ```
 
 #### useTransaction()
