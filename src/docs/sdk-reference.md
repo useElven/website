@@ -166,6 +166,17 @@ Params:
 - `cb` - optional callback function
 - `webWalletRedirectUrl` - redirect url when using Web Wallet, default `/`
 
+**Important**
+From version 0.11.0, you can also pass whole Transaction object to the `triggerTx`. It is helpful when you need some custom Transaction logic and builders.
+
+It could look like:
+```jsx
+ triggerTx({
+  tx: transactionObject
+});
+```
+Where `transactionObject` is your Transaction object, the same as type as the one prepared in `triggerTx`.
+
 #### useTokenTransfer()
 
 The hook is a wrapper over the `useTransaction`. It is designed to simplify transferring ESDT tokens (so fungible, NFT, SFT, meta). You can send them between standard addresses and to a smart contract. You can also call a smart contract endpoint and pass the required parameters.
@@ -236,6 +247,42 @@ Params:
 
 - `cb` - optional callback function
 - `webWalletRedirectUrl` - redirect url when using Web Wallet, default `/`
+
+#### useMultiTokenTransfer()
+
+The hook is responsible for transferring multiple ESDT tokens (Fungible/Non-fungible/Semi-fungible/Meta).
+
+Example:
+
+```jsx
+(...)
+const {
+  pending, 
+  transfer,
+  transaction, // transaction data before signing
+  txResult, // transaction result on chain
+  error
+} = useMultiTokenTransfer({ cb, webWalletRedirectUrl });
+
+(...)
+
+transfer({
+  tokens,
+  receiver
+});
+(...)
+```
+
+Where `tokens` is an array of objects with type `MultiTransferToken` (can be imported from the lib).
+
+MultiTransferToken:
+```typescript
+{
+  type: MultiTransferTokenType; // enum: FungibleESDT, MetaESDT, NonFungibleESDT, SemiFungibleESDT
+  tokenId: string;
+  amount: string;
+}
+```
 
 #### useScQuery()
 
@@ -357,6 +404,13 @@ const { data, isLoading, isValidating, fetch, error } = useApiCall<Token[]>({
 
 You can pass the response type. Returned object is the same as in `useScQuery`
 The hook uses `swr` and native `fetch` under the hood.
+
+#### Real life examples:
+
+To get more familiarity with the use Elven library, you can check two open-source projects that use a lot of it:
+
+- [Buildo.dev](https://github.com/xdevguild/buildo.dev)
+- [Next.js Dapp Template](https://github.com/xdevguild/nextjs-dapp-template)
 
 #### More to come
 

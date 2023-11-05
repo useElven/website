@@ -28,6 +28,10 @@ Besides authentication, useElven will also help with all the interactions, like 
 
 ## How to start using it?
 
+<div class="docs-box docs-info-box">
+  Just to let you know, integrating it with frameworks needs some additional configuration. You'll find examples in ready-to-use starter templates: <a href="https://github.com/useElven/react-vite" target="_blank">Vite + React</a> and <a href="https://github.com/xdevguild/nextjs-dapp-template" target="_blank">Next.js template</a>. Check the configuration files in both.
+</div>
+
 Add useElven to your project:
 ```
 npm install @useelven/core --save
