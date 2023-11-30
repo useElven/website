@@ -14,9 +14,9 @@ twitterUrl: "https://www.useElven.com/docs/sdk-reference.html"
 githubUrl: "https://github.com/useElven/website/edit/main/src/docs/sdk-reference.md"
 ---
 
-__Please be aware that the docs will be improved in the following days!__
-
-The code samples are not ready to copy and paste. Please search for them in the code of the demo apps linked on the homepage.
+<div class="docs-box docs-info-box">
+  The code samples are not ready to copy and paste. Please search for them in the code of the demo apps: <a href="https://github.com/useElven/react-vite" target="_blank">Vite + React</a> and <a href="https://github.com/xdevguild/nextjs-dapp-template" target="_blank">Next.js template</a>. Also, please check the configuration files in both.
+</div>
 
 #### useNetworkSync()
 
@@ -35,9 +35,7 @@ const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
   });
 
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <Component {...pageProps} />
   );
 };
 ```
@@ -344,6 +342,37 @@ interface TypedOutcomeBundle {
 ```
 
 You can then process the data. For example `data.firstValue.valueOf()` or `data.firstValue.toString()` if applicable. The returned type can be further processed using [sdk-core](https://github.com/multiversx/mx-sdk-js-core).
+
+#### useSignMessage()
+
+The hook allows you to sign any custom message using your wallet address.
+
+```jsx
+import { useSignMessage } from '@useelven/core';
+
+(...)
+
+const { signMessage, pending, signature } = useSignMessage();
+
+const handleSignMessage = () => {
+  signMessage({ message: 'Elven Family is awesome!' });
+};
+
+(...)
+
+console.log(signature)
+```
+
+signMessage arguments:
+
+```ts
+type SignMessageArgs = {
+  message: string;
+  options?: {
+      callbackUrl?: string;
+  };
+};
+```
 
 #### useLoggingIn()
 

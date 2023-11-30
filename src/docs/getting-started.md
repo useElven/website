@@ -53,9 +53,7 @@ const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
   useNetworkSync({ chainType: 'devnet' });
 
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <Component {...pageProps} />
   );
 };
 ```
