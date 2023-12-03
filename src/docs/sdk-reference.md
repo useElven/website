@@ -343,6 +343,71 @@ interface TypedOutcomeBundle {
 
 You can then process the data. For example `data.firstValue.valueOf()` or `data.firstValue.toString()` if applicable. The returned type can be further processed using [sdk-core](https://github.com/multiversx/mx-sdk-js-core).
 
+#### useScDeploy()
+
+The hook allows you to deploy a smart contract directly from the provided path to file (also URL) or as an ArrayBuffer.
+
+```jsx
+import { useScDeploy } from '@useelven/core';
+
+(...)
+
+const { deploy, pending, transaction, error, txResult, scAddress } = useScDeploy({ cb, webWalletRedirectUrl });
+
+const handleDeploy = () => {
+  deploy({ source: '/mysmartcontract.wasm' });
+  // or:
+  // deploy({ source: 'https://www.somedomain.com/mysmartcontract.wasm' });
+  // or:
+  // const response = await fetch(source);
+  // const bytes = await response.arrayBuffer();
+  // deploy({ source: bytes });
+};
+
+(...)
+
+// scAddress is computed from the sender's address and nonce,
+// it will be available immediately
+// so in your app, the best is to wait for txResult and only then show the scAddress
+// txResult is transaction data on chain after all processes are finished
+console.log(scAddress)
+```
+
+deploy arguments:
+```ts
+export interface ScDeployArgs {
+  source: Buffer | string;
+  gasLimit?: number;
+  codeMetadata?: [boolean, boolean, boolean, boolean];
+  initArguments?: TypedValue[];
+}
+```
+
+`codeMetadata` defines the properties of the smart contract which are in order: 
+```
+- `upgradeable` Whether the contract is upgradeable
+- `readable` Whether other contracts can read this contract's data (without calling one of its pure functions)
+- `payable` Whether the contract is payable
+- `payableBySc` Whether the contract is payable by other smart contracts
+```
+
+So you need to pass boolean values like `[true, true, false, false]`
+
+`initArguments` is a set of TypedValue arguments. For example, if your smart contract needs two arguments in the init function, and they are a BigUint and ManagedBuffer, you could do the following:
+
+```ts
+import { useScDeploy } from '@useelven/core';
+import { BigUintValue, BytesValue } from '@multiversx/sdk-core';
+
+(...)
+
+deploy({ source: '/mysmartcontract.wasm', initArguments: [new BigUintValue(100), BytesValue.fromUTF8('Some string')] });
+
+(...)
+```
+
+Check sdk-core lib for more data types helpers.
+
 #### useSignMessage()
 
 The hook allows you to sign any custom message using your wallet address.
