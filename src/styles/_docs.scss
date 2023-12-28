@@ -154,7 +154,7 @@
 
 .docs-sidebar-right {
   width: $size-docs-sidebar-right-width;
-  max-height: 100%;
+  height: calc(100vh - 130px);
   overflow-y: auto;
   position: fixed;
   top: $size-header-height;

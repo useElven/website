@@ -120,7 +120,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useTransaction({ cb, webWalletRedirectUrl });
+} = useTransaction({ id, cb, webWalletRedirectUrl });
 
 const handleSendTx = () => {
   const demoMessage = 'Transaction demo!';
@@ -161,8 +161,9 @@ const handleSendTx = () => {
 
 Params:
 
+- `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `webWalletRedirectUrl` - redirect url when using Web Wallet, default `/`
+- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
 
 **Important**
 From version 0.11.0, you can also pass whole Transaction object to the `triggerTx`. It is helpful when you need some custom Transaction logic and builders.
@@ -227,7 +228,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useTokenTransfer({ cb, webWalletRedirectUrl });
+} = useTokenTransfer({ id, cb, webWalletRedirectUrl });
 
 (...)
 
@@ -243,8 +244,9 @@ transfer({
 
 Params:
 
+- `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `webWalletRedirectUrl` - redirect url when using Web Wallet, default `/`
+- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
 
 #### useMultiTokenTransfer()
 
@@ -260,7 +262,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useMultiTokenTransfer({ cb, webWalletRedirectUrl });
+} = useMultiTokenTransfer({ id, cb, webWalletRedirectUrl });
 
 (...)
 
@@ -281,6 +283,12 @@ MultiTransferToken:
   amount: string;
 }
 ```
+
+Params:
+
+- `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
+- `cb` - optional callback function
+- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
 
 #### useScQuery()
 
@@ -352,7 +360,7 @@ import { useScDeploy } from '@useelven/core';
 
 (...)
 
-const { deploy, pending, transaction, error, txResult, scAddress } = useScDeploy({ cb, webWalletRedirectUrl });
+const { deploy, pending, transaction, error, txResult, scAddress } = useScDeploy({ id, cb, webWalletRedirectUrl });
 
 const handleDeploy = () => {
   deploy({ source: '/mysmartcontract.wasm' });
@@ -406,6 +414,12 @@ deploy({ source: '/mysmartcontract.wasm', initArguments: [new BigUintValue(100),
 (...)
 ```
 
+Params:
+
+- `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
+- `cb` - optional callback function
+- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
+
 Check sdk-core lib for more data types helpers.
 
 #### useSignMessage()
@@ -448,7 +462,7 @@ import { useLoggingIn } from '@useelven/core';
 
 (...)
 
-const { isLoggingIn, error, isLoggedIn } = useLoggingIn();
+const { pending, error, loggedIn } = useLoggingIn();
 ```
 
 #### useAccount()
@@ -461,6 +475,47 @@ import { useAccount } from '@useelven/core';
 (...)
 
 const { address, nonce, balance } = useAccount();
+```
+
+#### useConfig()
+
+The hook will provide information about curent global configuration.
+
+```jsx
+import { useConfig } from '@useelven/core';
+
+(...)
+
+const {
+  chainType,
+  shortId,
+  name,
+  egldLabel,
+  egldDenomination,
+  decimals,
+  gasPerDataByte,
+  walletConnectDeepLink,
+  xAliasAddress,
+  walletAddress,
+  apiAddress,
+  explorerAddress,
+  apiTimeout,
+  IPFSGateway,
+  walletConnectV2RelayAddresses,
+  walletConnectV2ProjectId,
+} = useConfig();
+```
+
+#### useNetwork()
+
+The hook will provide the dapp provider and network provider instances. It isn't used much, but in some cases, it can be helpful.
+
+```jsx
+import { useNetwork } from '@useelven/core';
+
+(...)
+
+const { dappProvider, apiNetworkProvider } = useAccount();
 ```
 
 #### useLoginInfo()
