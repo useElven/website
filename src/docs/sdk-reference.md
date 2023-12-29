@@ -560,6 +560,7 @@ To get more familiarity with the use Elven library, you can check two open-sourc
 
 - [Buildo.dev](https://github.com/xdevguild/buildo.dev)
 - [Next.js Dapp Template](https://github.com/xdevguild/nextjs-dapp-template)
+- [Piggy Bank Dapp](https://github.com/xdevguild/piggy-bank-dapp)
 
 #### More to come
 
