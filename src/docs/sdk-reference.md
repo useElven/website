@@ -188,7 +188,7 @@ Example: we send the fungible tokens to a faucet smart contract, and we want to 
 
 ```jsx
 import { BigUIntValue } from '@multiversx/sdk-core';
-import { useTokenTransfer ScTokenTransferType } from '@useelven/core';
+import { useTokenTransfer, ESDTType } from '@useelven/core';
 
 (...)
 
@@ -198,17 +198,15 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useTokenTransfer({ cb, webWalletRedirectUrl });
+} = useTokenTransfer({ id, cb, webWalletRedirectUrl }); // useTokenTransfer params are optional, read more about them below
 
 (...)
 
 transfer({
-  type: ScTokenTransferType.ESDTTransfer,
+  type: ESDTType.FungibleESDT,
   tokenId: 'BUILDO-890d14',
-  address: 'erd1qqqqqqqqqqqqqpgqwd59aum8c7c72ces7cezsmhqd8rqrtwagtksp6jahr',
-  amount: '10000000000000000000', // amount for a token with 18 decimal places (here the amount is 10)
-  gasLimit: 3000000,
-  value: 0,
+  receiver: 'erd1qqqqqqqqqqqqqpgqwd59aum8c7c72ces7cezsmhqd8rqrtwagtksp6jahr',
+  amount: '10', // (here the amount is 10, no need for denomination etc.)
   endpointName: 'setLimit', // In this example - faucet limit per day
   endpointArgs: [new BigUIntValue('1000000000000000000')],
 });
@@ -218,7 +216,7 @@ Here is another example where we want to send a specific NFT token to the stakin
 
 ```jsx
 import { BigUIntValue } from '@multiversx/sdk-core';
-import { useTokenTransfer ScTokenTransferType } from '@useelven/core';
+import { useTokenTransfer, ESDTType } from '@useelven/core';
 
 (...)
 
@@ -233,14 +231,14 @@ const {
 (...)
 
 transfer({
-  type: ScTokenTransferType.ESDTNFTTransfer,
-  tokenId: 'FCS-12ed15-0c',
-  address: 'erd1qqqqqqqqqq...',
-  nonce: 12,
-  gasLimit: 5000000,
+  type: ESDTType.FungibleESDT,
+  tokenId: 'FCS-12ed15-0c', // token id, not collection id
+  receiver: 'erd1qqqqqqqqqq...',
   endpointName: 'stake', // In this example - we want to call the stake endpoint
 });
 ```
+
+You can also send ESDTs to standard wallet addresses. Omit `endpointName` and `endpointArgs`.
 
 Params:
 
@@ -248,13 +246,24 @@ Params:
 - `cb` - optional callback function
 - `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
 
+ESDTType enum:
+
+```typescript
+enum ESDTType {
+    FungibleESDT = "FungibleESDT",
+    MetaESDT = "MetaESDT",
+    NonFungibleESDT = "NonFungibleESDT",
+    SemiFungibleESDT = "SemiFungibleESDT"
+}
+```
+
 #### useMultiTokenTransfer()
 
-The hook is responsible for transferring multiple ESDT tokens (Fungible/Non-fungible/Semi-fungible/Meta).
+The hook is responsible for transferring multiple ESDT tokens (Fungible/Non-fungible/Semi-fungible/Meta). You can also send and call the smart contract endpoint.
 
 Example:
 
-```jsx
+```typescript
 (...)
 const {
   pending, 
@@ -262,23 +271,49 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useMultiTokenTransfer({ id, cb, webWalletRedirectUrl });
+} = useMultiTokenTransfer({ id, cb, webWalletRedirectUrl }); // useMultiTokenTransfer params are optional, read more about them below
 
 (...)
 
+const tokensArr: MultiTransferToken[] = [
+  {
+    type: ESDTType.FungibleESDT,
+    amount: '150',
+    tokenId: 'FUNG-303171',
+  },
+  {
+    type: ESDTType.SemiFungibleESDT,
+    amount: '120', // (here the amount is 120, no need for denomination etc.)
+    tokenId: 'BURN-19ee93-01', // token id, not collection id
+  },
+  {
+    type: ESDTType.MetaESDT,
+    amount: '10.55', // (here the amount is 10.55)
+    tokenId: 'META-18r993-01',
+  },
+  {
+    type: ESDTType.NonFungibleESDT,
+    tokenId: 'ELVEN-14e593-01',
+  },
+];
+
 transfer({
-  tokens,
-  receiver
+  tokens: tokensArr,
+  receiver: 'erd1qqqqqqqqqq...', // smart contract address
+  endpointName: 'burn',
+  endpointArgs: [],
 });
 (...)
 ```
+
+You can also send ESDTs to standard wallet addresses. Omit `endpointName` and `endpointArgs`.
 
 Where `tokens` is an array of objects with type `MultiTransferToken` (can be imported from the lib).
 
 MultiTransferToken:
 ```typescript
 {
-  type: MultiTransferTokenType; // enum: FungibleESDT, MetaESDT, NonFungibleESDT, SemiFungibleESDT
+  type: ESDTType;
   tokenId: string;
   amount: string;
 }
@@ -289,6 +324,17 @@ Params:
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
 - `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
+
+ESDTType enum:
+
+```typescript
+enum ESDTType {
+    FungibleESDT = "FungibleESDT",
+    MetaESDT = "MetaESDT",
+    NonFungibleESDT = "NonFungibleESDT",
+    SemiFungibleESDT = "SemiFungibleESDT"
+}
+```
 
 #### useScQuery()
 
