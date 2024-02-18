@@ -231,7 +231,7 @@ const {
 (...)
 
 transfer({
-  type: ESDTType.FungibleESDT,
+  type: ESDTType.NonFungibleESDT,
   tokenId: 'FCS-12ed15-0c', // token id, not collection id
   receiver: 'erd1qqqqqqqqqq...',
   endpointName: 'stake', // In this example - we want to call the stake endpoint
