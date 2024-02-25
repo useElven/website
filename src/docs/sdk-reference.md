@@ -57,11 +57,13 @@ apiAddress?: string;
 explorerAddress?: string;
 IPFSGateway?: string;
 apiTimeout?: string;
+txWatcherTimeout?: string;
+txWatcherPatience?: string;
 walletConnectV2RelayAddresses?: string[];
 walletConnectV2ProjectId?: string;
 ```
 
-You can overwrite each of the settings. But when you don't overwrite all of them and overwrite the `chainType`, all other values will default by the `chainType`. You can find all defaults [here](https://github.com/useElven/core/blob/wallet-connect-2/src/config/network.ts).
+You can overwrite each of the settings. But when you don't overwrite all of them and overwrite the `chainType`, all other values will default by the `chainType`. You can find all defaults [here](https://github.com/useElven/core/blob/main/src/config/network.ts).
 
 So, for example, when you set the `chainType` to `testnet`, and `apiTimeout` to `10000` and nothing more. Then you will get all default settings for the testnet, like the API endpoint, `testnet-api.multiversx.com`, but the `apiTimeout` will be kept at `10000`.
 
@@ -120,7 +122,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useTransaction({ id, cb, webWalletRedirectUrl });
+} = useTransaction({ id, cb, callbackUrl });
 
 const handleSendTx = () => {
   const demoMessage = 'Transaction demo!';
@@ -163,7 +165,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
 
 **Important**
 From version 0.11.0, you can also pass whole Transaction object to the `triggerTx`. It is helpful when you need some custom Transaction logic and builders.
@@ -198,7 +200,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useTokenTransfer({ id, cb, webWalletRedirectUrl }); // useTokenTransfer params are optional, read more about them below
+} = useTokenTransfer({ id, cb, callbackUrl }); // useTokenTransfer params are optional, read more about them below
 
 (...)
 
@@ -226,7 +228,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useTokenTransfer({ id, cb, webWalletRedirectUrl });
+} = useTokenTransfer({ id, cb, callbackUrl });
 
 (...)
 
@@ -244,7 +246,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
 
 ESDTType enum:
 
@@ -271,7 +273,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useMultiTokenTransfer({ id, cb, webWalletRedirectUrl }); // useMultiTokenTransfer params are optional, read more about them below
+} = useMultiTokenTransfer({ id, cb, callbackUrl }); // useMultiTokenTransfer params are optional, read more about them below
 
 (...)
 
@@ -323,7 +325,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
 
 ESDTType enum:
 
@@ -406,7 +408,7 @@ import { useScDeploy } from '@useelven/core';
 
 (...)
 
-const { deploy, pending, transaction, error, txResult, scAddress } = useScDeploy({ id, cb, webWalletRedirectUrl });
+const { deploy, pending, transaction, error, txResult, scAddress } = useScDeploy({ id, cb, callbackUrl });
 
 const handleDeploy = () => {
   deploy({ source: '/mysmartcontract.wasm' });
@@ -464,7 +466,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `webWalletRedirectUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
 
 Check sdk-core lib for more data types helpers.
 
@@ -546,6 +548,8 @@ const {
   apiAddress,
   explorerAddress,
   apiTimeout,
+  txWatcherTimeout,
+  txWatcherPatience,
   IPFSGateway,
   walletConnectV2RelayAddresses,
   walletConnectV2ProjectId,
