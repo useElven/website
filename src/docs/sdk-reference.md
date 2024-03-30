@@ -18,7 +18,7 @@ githubUrl: "https://github.com/useElven/website/edit/main/src/docs/sdk-reference
   The code samples are not ready to copy and paste. Please search for them in the code of the demo apps: <a href="https://github.com/useElven/react-vite" target="_blank">Vite + React</a> and <a href="https://github.com/xdevguild/nextjs-dapp-template" target="_blank">Next.js template</a>. Also, please check the configuration files in both.
 </div>
 
-#### useNetworkSync()
+#### useNetworkSync
 
 The hook is responsible for synchronizing the network on each refresh. It should be used in the root component. Here is the `_app.tsx` in Next.js app.
 
@@ -82,7 +82,7 @@ const {
   error,
   walletConnectUri,
   getHWAccounts
-} = useLogin();
+} = useLogin(params);
 
 (...)
 
@@ -102,7 +102,32 @@ enum LoginMethodsEnum {
 }
 ```
 
-#### useTransaction()
+Params:
+
+- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
+
+#### useLogout
+
+The hook is used to disconnect/logout of the wallet.
+
+```ts
+const {
+  logout,
+  pending,
+  loggedIn,
+  error,
+} = useLogout(params);
+
+(...)
+
+logout();
+```
+
+Params:
+
+- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
+
+#### useTransaction
 
 The hook provides all that is required for triggering transactions. useTransaction can also take a callback function as an argument.
 
@@ -165,7 +190,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
 
 **Important**
 From version 0.11.0, you can also pass whole Transaction object to the `triggerTx`. It is helpful when you need some custom Transaction logic and builders.
@@ -178,7 +203,7 @@ It could look like:
 ```
 Where `transactionObject` is your Transaction object, the same as type as the one prepared in `triggerTx`.
 
-#### useTokenTransfer()
+#### useTokenTransfer
 
 The hook is a wrapper over the `useTransaction`. It is designed to simplify transferring ESDT tokens (so fungible, NFT, SFT, meta). You can send them between standard addresses and to a smart contract. You can also call a smart contract endpoint and pass the required parameters.
 
@@ -246,7 +271,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
 
 ESDTType enum:
 
@@ -259,7 +284,7 @@ enum ESDTType {
 }
 ```
 
-#### useMultiTokenTransfer()
+#### useMultiTokenTransfer
 
 The hook is responsible for transferring multiple ESDT tokens (Fungible/Non-fungible/Semi-fungible/Meta). You can also send and call the smart contract endpoint.
 
@@ -325,7 +350,7 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
 
 ESDTType enum:
 
@@ -338,7 +363,7 @@ enum ESDTType {
 }
 ```
 
-#### useScQuery()
+#### useScQuery
 
 The hook uses useSWR under the hood and can be triggered on a component mount or remotely on some action. It has two different states for the pending action. For initial load and on revalidate. It also takes one of three return data types: 'number', 'string', 'boolean'. For now, it assumes that you know what data type will be returned by a smart contract. Later it will get more advanced functionality.
 
@@ -399,7 +424,7 @@ interface TypedOutcomeBundle {
 
 You can then process the data. For example `data.firstValue.valueOf()` or `data.firstValue.toString()` if applicable. The returned type can be further processed using [sdk-core](https://github.com/multiversx/mx-sdk-js-core).
 
-#### useScDeploy()
+#### useScDeploy
 
 The hook allows you to deploy a smart contract directly from the provided path to file (also URL) or as an ArrayBuffer.
 
@@ -466,11 +491,11 @@ Params:
 
 - `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
 - `cb` - optional callback function
-- `callbackUrl` - optional redirect url when using Web Wallet, default `/`
+- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
 
 Check sdk-core lib for more data types helpers.
 
-#### useSignMessage()
+#### useSignMessage
 
 The hook allows you to sign any custom message using your wallet address.
 
@@ -501,7 +526,7 @@ type SignMessageArgs = {
 };
 ```
 
-#### useLoggingIn()
+#### useLoggingIn
 
 The hook will provide information about the authentication flow state. It will tell if the user is already logged in or is logging in.
 
@@ -513,7 +538,7 @@ import { useLoggingIn } from '@useelven/core';
 const { pending, error, loggedIn } = useLoggingIn();
 ```
 
-#### useAccount()
+#### useAccount
 
 The hook will provide information about the user's account data state. The data: address, nonce, balance.
 
@@ -525,7 +550,7 @@ import { useAccount } from '@useelven/core';
 const { address, nonce, balance } = useAccount();
 ```
 
-#### useConfig()
+#### useConfig
 
 The hook will provide information about curent global configuration.
 
@@ -556,7 +581,7 @@ const {
 } = useConfig();
 ```
 
-#### useNetwork()
+#### useNetwork
 
 The hook will provide the dapp provider and network provider instances. It isn't used much, but in some cases, it can be helpful.
 
@@ -568,7 +593,7 @@ import { useNetwork } from '@useelven/core';
 const { dappProvider, apiNetworkProvider } = useAccount();
 ```
 
-#### useLoginInfo()
+#### useLoginInfo
 
 The hook will provide information about the user's auth data state. The data: loginMethod, expires, loginToken, signature, accessToken.
 
@@ -586,7 +611,7 @@ const {
 } = useLoginInfo();
 ```
 
-#### useApiCall()
+#### useApiCall
 
 The hook provides a convenient way of doing custom API calls unrelated to transactions or smart contract queries. By default, it will use MultiversX API endpoint. But it can be any type of API, not only MultiversX API. In that case, you would need to pass the `{ baseEndpoint: "https://some-api.com" }`
 
