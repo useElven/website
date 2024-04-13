@@ -20,23 +20,39 @@ githubUrl: "https://github.com/useElven/website/edit/main/src/docs/sdk-reference
 
 #### useNetworkSync
 
-The hook is responsible for synchronizing the network on each refresh. It should be used in the root component. Here is the `_app.tsx` in Next.js app.
+The hook is responsible for synchronizing the network on each refresh. It should be used in the root component like the root layout. For example:
 
 ```jsx
 import { useNetworkSync } from '@useelven/core';
+import { ElvenInit } from './components';
 
-const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
+const RootLayout = () => {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <ElvenInit />
+        (...)
+      </body>
+    </html>
+  );
+};
+```
 
+where ElvenInit:
+
+```jsx
+'use client';
+
+import { useNetworkSync } from '@useelven/core';
+
+export const ElvenInit = () => {
   useNetworkSync({
     chainType: 'devnet',
     // If you want to use xPortal signing, 
     // you would need to configure your Wallet Connect project id here: https://cloud.walletconnect.com
     walletConnectV2ProjectId: '<your_wallet_connect_project_id_here>'
   });
-
-  return (
-    <Component {...pageProps} />
-  );
+  return null;
 };
 ```
 
@@ -205,88 +221,7 @@ Where `transactionObject` is your Transaction object, the same as type as the on
 
 #### useTokenTransfer
 
-The hook is a wrapper over the `useTransaction`. It is designed to simplify transferring ESDT tokens (so fungible, NFT, SFT, meta). You can send them between standard addresses and to a smart contract. You can also call a smart contract endpoint and pass the required parameters.
-
-<div class="docs-box docs-info-box">
-  You should always use transaction hooks when you are sure that you are in a signed-in context (Check Authenticated component in <a href="https://github.com/xdevguild/nextjs-dapp-template">Next.js Dapp Template</a>).
-</div>
-
-Example: we send the fungible tokens to a faucet smart contract, and we want to call the `setLimit` endpoint, which is responsible for setting the daily claim limit. You can check the code [here](https://github.com/xdevguild/esdt-faucet-dapp).
-
-```jsx
-import { BigUIntValue } from '@multiversx/sdk-core';
-import { useTokenTransfer, ESDTType } from '@useelven/core';
-
-(...)
-
-const {
-  pending, 
-  transfer,
-  transaction, // transaction data before signing
-  txResult, // transaction result on chain
-  error
-} = useTokenTransfer({ id, cb, callbackUrl }); // useTokenTransfer params are optional, read more about them below
-
-(...)
-
-transfer({
-  type: ESDTType.FungibleESDT,
-  tokenId: 'BUILDO-890d14',
-  receiver: 'erd1qqqqqqqqqqqqqpgqwd59aum8c7c72ces7cezsmhqd8rqrtwagtksp6jahr',
-  amount: '10', // (here the amount is 10, no need for denomination etc.)
-  endpointName: 'setLimit', // In this example - faucet limit per day
-  endpointArgs: [new BigUIntValue('1000000000000000000')],
-});
-```
-
-Here is another example where we want to send a specific NFT token to the staking smart contract, and at the same time, we want to call the `stake` endpoint.
-
-```jsx
-import { BigUIntValue } from '@multiversx/sdk-core';
-import { useTokenTransfer, ESDTType } from '@useelven/core';
-
-(...)
-
-const {
-  pending, 
-  transfer,
-  transaction, // transaction data before signing
-  txResult, // transaction result on chain
-  error
-} = useTokenTransfer({ id, cb, callbackUrl });
-
-(...)
-
-transfer({
-  type: ESDTType.NonFungibleESDT,
-  tokenId: 'FCS-12ed15-0c', // token id, not collection id
-  receiver: 'erd1qqqqqqqqqq...',
-  endpointName: 'stake', // In this example - we want to call the stake endpoint
-});
-```
-
-You can also send ESDTs to standard wallet addresses. Omit `endpointName` and `endpointArgs`.
-
-Params:
-
-- `id` - custom ID for a transaction. It is helpful when there is a need to have multiple calls on the same view, especially for web wallet redirections, but generally it is optional
-- `cb` - optional callback function
-- `callbackUrl` - Optional redirect URL, by default, will use `window.location.href` in case of Web wallet or 2FA redirects (Pass the pathname without the origin)
-
-ESDTType enum:
-
-```typescript
-enum ESDTType {
-    FungibleESDT = "FungibleESDT",
-    MetaESDT = "MetaESDT",
-    NonFungibleESDT = "NonFungibleESDT",
-    SemiFungibleESDT = "SemiFungibleESDT"
-}
-```
-
-#### useMultiTokenTransfer
-
-The hook is responsible for transferring multiple ESDT tokens (Fungible/Non-fungible/Semi-fungible/Meta). You can also send and call the smart contract endpoint.
+The hook is responsible for transferring ESDT tokens (Fungible/Non-fungible/Semi-fungible/Meta). You can also send and call the smart contract endpoint.
 
 Example:
 
@@ -327,15 +262,18 @@ const tokensArr: MultiTransferToken[] = [
 transfer({
   tokens: tokensArr,
   receiver: 'erd1qqqqqqqqqq...', // smart contract address
+  gasLimit: 60000000,
   endpointName: 'burn',
   endpointArgs: [],
 });
 (...)
 ```
 
-You can also send ESDTs to standard wallet addresses. Omit `endpointName` and `endpointArgs`.
+
 
 Where `tokens` is an array of objects with type `MultiTransferToken` (can be imported from the lib).
+
+You can also send ESDTs to standard wallet addresses. In that case omit `endpointName`, `endpointArgs` and `gasLimit`.
 
 MultiTransferToken:
 ```typescript
@@ -459,22 +397,21 @@ deploy arguments:
 export interface ScDeployArgs {
   source: Buffer | string;
   gasLimit?: number;
-  codeMetadata?: [boolean, boolean, boolean, boolean];
-  initArguments?: TypedValue[];
+  isUpgradeable?: boolean;
+  isReadable?: boolean;
+  isPayable?: boolean;
+  isPayableBySmartContract?: boolean;
+  initArguments?: T[];
 }
 ```
 
-`codeMetadata` defines the properties of the smart contract which are in order: 
-```
-- `upgradeable` Whether the contract is upgradeable
-- `readable` Whether other contracts can read this contract's data (without calling one of its pure functions)
-- `payable` Whether the contract is payable
-- `payableBySc` Whether the contract is payable by other smart contracts
-```
-
-So you need to pass boolean values like `[true, true, false, false]`
-
-`initArguments` is a set of TypedValue arguments. For example, if your smart contract needs two arguments in the init function, and they are a BigUint and ManagedBuffer, you could do the following:
+- `source` The source of your smart contract
+- `gasLimit` Gas limit for the transaction
+- `isUpgradeable` Whether the contract is upgradeable
+- `isReadable` Whether other contracts can read this contract's data (without calling one of its pure functions)
+- `isPayable` Whether the contract is payable
+- `isPayableBySmartContract` Whether the contract is payable by other smart contracts
+- `initArguments` is a set of TypedValue arguments. For example, if your smart contract needs two arguments in the init function, and they are a BigUint and ManagedBuffer, you could do the following:
 
 ```ts
 import { useScDeploy } from '@useelven/core';

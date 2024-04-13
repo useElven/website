@@ -34,7 +34,7 @@ Besides authentication, useElven will also help with all the interactions, like 
 
 Add useElven to your project:
 ```
-npm install @useelven/core --save
+npm install @useelven/core @multiversx/sdk-core --save
 ```
 
 Then import in React app. For example:
@@ -43,18 +43,39 @@ Then import in React app. For example:
 import { useNetworkSync } from '@useelven/core';
 ```
 
-Initialize:
+Initialize (example: Next.js App Router):
 
 ```jsx
 import { useNetworkSync } from '@useelven/core';
+import { ElvenInit } from './components';
 
-const NextJSDappTemplate = ({ Component, pageProps }: AppProps) => {
-
-  useNetworkSync({ chainType: 'devnet' });
-
+const RootLayout = () => {
   return (
-    <Component {...pageProps} />
+    <html lang="en">
+      <body className={inter.className}>
+        <ElvenInit />
+        (...)
+      </body>
+    </html>
   );
+};
+```
+
+where ElvenInit:
+
+```jsx
+'use client';
+
+import { useNetworkSync } from '@useelven/core';
+
+export const ElvenInit = () => {
+  useNetworkSync({
+    chainType: 'devnet',
+    // If you want to use xPortal signing, 
+    // you would need to configure your Wallet Connect project id here: https://cloud.walletconnect.com
+    walletConnectV2ProjectId: '<your_wallet_connect_project_id_here>'
+  });
+  return null;
 };
 ```
 
@@ -85,7 +106,7 @@ const handleSendTx = () => {
     // additional 50000 will be added internally when working with guarded accounts
     gasLimit: 50000 + 1500 * demoMessage.length, 
     data: new TransactionPayload(demoMessage),
-    value: TokenTransfer.egldFromBigInteger(1_000_000_000_000_000_000),
+    value: BigInt('1000000000000000000'),
   });
 };
 ```
