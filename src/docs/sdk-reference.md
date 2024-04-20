@@ -566,6 +566,51 @@ const { data, isLoading, isValidating, fetch, error } = useApiCall<Token[]>({
 You can pass the response type. Returned object is the same as in `useScQuery`
 The hook uses `swr` and native `fetch` under the hood.
 
+#### formatAmount
+
+The utility which helps with amounts formatting.
+
+```jsx
+import { formatAmount } from '@useelven/core';
+
+(...)
+
+formatAmount('1000000000000', 18, 18) // 0.000001
+```
+
+Arguments:
+```ts
+type AmountArgs = {
+  amount: string;
+  decimals: number;
+  rounding?: number;
+};
+```
+
+Returns string.
+
+#### parseAmount
+
+The utility which helps with amounts parsing.
+
+```jsx
+import { parseAmount } from '@useelven/core';
+
+(...)
+
+parseAmount('0.000001', 18) // 1000000000000n
+```
+
+Arguments:
+```ts
+type AmountArgs = {
+  amount: string;
+  decimals: number;
+};
+```
+
+Returns bigInt.
+
 #### Real life examples:
 
 To get more familiarity with the use Elven library, you can check two open-source projects that use a lot of it:
