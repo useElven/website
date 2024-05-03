@@ -233,7 +233,7 @@ const {
   transaction, // transaction data before signing
   txResult, // transaction result on chain
   error
-} = useMultiTokenTransfer({ id, cb, callbackUrl }); // useMultiTokenTransfer params are optional, read more about them below
+} = useTokenTransfer({ id, cb, callbackUrl }); // useTokenTransfer params are optional, read more about them below
 
 (...)
 
