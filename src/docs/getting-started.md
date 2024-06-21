@@ -18,6 +18,10 @@ useElven is a set of hooks and tools designed to work with React-base applicatio
 
 The tool is a wrapper for [sdk-js](https://docs.multiversx.com/sdk-and-tools/sdk-js/) - a set of Typescript/Javascript libraries.
 
+<div class="docs-box docs-info-box">
+Please be aware that versions below 1.0.0 will still have breaking changes. Till then, please 'freeze' the version of useElven in your app, and decide when to upgrade. Please remember that the scope of functionality is limited and does not correspond to that of sdk-dapp. But over time, functionalities are added.
+</div>
+
 ## What useElven can do?
 
 The fundamental functionality is connecting and logging the user using auth providers. useElven supports all of [4 signing providers](https://docs.multiversx.com/sdk-and-tools/sdk-js/sdk-js-signing-providers).
@@ -25,6 +29,8 @@ The fundamental functionality is connecting and logging the user using auth prov
 By default useElven uses [@multiversx/sdk-native-auth-client](https://www.npmjs.com/package/@multiversx/sdk-native-auth-client) under the hood.
 
 Besides authentication, useElven will also help with all the interactions, like sending native $EGLD tokens or even ESDT tokens. It will allow you to make most transactions, including interactions with custom smart contracts. There is also a possibility to query smart contracts. With an ABI file, you can also decode returned data using React hooks.
+
+useElven is designed to work with the MultiversX Web Wallet Hub and xPortal Discover (Hub) functionalities, though these integrations are still experimental. It integrates official webview provider. No additional action is required on your part to use these features.
 
 ## How to start using it?
 
