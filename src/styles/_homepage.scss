@@ -1,3 +1,5 @@
+@use "variables";
+
 .homepage-lead {
   text-align: center;
   margin-top: 120px;
@@ -15,7 +17,7 @@
   }
 
   a {
-    color: $color-main-contrast;
+    color: variables.$color-main-contrast;
   }
 }
 
@@ -76,16 +78,16 @@
   }
 
   a {
-    color: $color-main-dark;
+    color: variables.$color-main-dark;
   }
 }
 
 .homepage-lead-accent {
-  color: $color-main-contrast;
+  color: variables.$color-main-contrast;
 }
 
 .homepage-link {
-  color: $color-main-contrast;
+  color: variables.$color-main-contrast;
   margin-left: 5px;
   margin-right: 5px;
 }
@@ -95,28 +97,28 @@
     display: inline-block;
     padding: 10px 50px;
     border-radius: 6px;
-    border: 1px solid $color-main-contrast;
-    color: $color-main-light;
+    border: 1px solid variables.$color-main-contrast;
+    color: variables.$color-main-light;
     text-decoration: none;
     font-weight: 400;
-    background-color: $color-main-contrast;
+    background-color: variables.$color-main-contrast;
     transition: background-color .2s, color .2s;
     min-width: 200px;
     margin: auto 5px;
     font-size: 14px;
 
     &:hover {
-      color: $color-main-contrast;
-      background-color: $color-main-light;
+      color: variables.$color-main-contrast;
+      background-color: variables.$color-main-light;
     }
 
     &.dark {
-      background-color: $color-main-dark;
-      border: 1px solid $color-main-dark;
+      background-color: variables.$color-main-dark;
+      border: 1px solid variables.$color-main-dark;
 
       &:hover {
-        background-color: $color-main-light;
-        color: $color-main-dark;
+        background-color: variables.$color-main-light;
+        color: variables.$color-main-dark;
       }
     }
 
@@ -145,17 +147,17 @@
   .demo-tile {
     border-radius: 8px;
     min-width: 200px;
-    border: 1px solid $color-main-borders;
+    border: 1px solid variables.$color-main-borders;
     padding: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
     transition: box-shadow 100ms ease, transform 100ms ease;
-    color: $color-main-dark;
+    color: variables.$color-main-dark;
     text-decoration: none;
     text-align: center;
-    background-color: $color-main-light;
+    background-color: variables.$color-main-light;
 
     &:hover {
       box-shadow: 0 1px 3px rgb(0 0 0 / 5%), rgb(0 0 0 / 5%) 0px 20px 25px -5px, rgb(0 0 0 / 4%) 0px 10px 10px -5px;

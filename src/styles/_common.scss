@@ -1,0 +1,37 @@
+@use "sass:color";
+@use "variables";
+
+// menu, search etc.
+.full-screen-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(color.adjust(variables.$color-main-dark, $lightness: -20%), 0.95);
+  color: variables.$color-main-light;
+  opacity: 0;
+  visibility: hidden;
+  z-index: variables.$z-index-full-screen-overlay;
+
+  &.js-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.full-screen-overlay-contents {
+  overflow-y: auto;
+  height: 100%;
+}
+
+.full-screen-overlay-close-btn {
+  position: absolute;
+  top: 40px;
+  right: 55px;
+  cursor: pointer;
+
+  .gg-close {
+    transform: scale(2);
+  }
+}
